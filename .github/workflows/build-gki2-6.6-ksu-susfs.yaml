@@ -49,7 +49,7 @@ jobs:
         
         # Nustatome KSU versiją
         sed -i '/-DKSU_VERSION/d' kernel/Kbuild
-        echo "ccflags-y += -DKSU_VERSION=$((29999 + COMMITS))" >> kernel/Kbuild
+        echo "ccflags-y += -DKSU_VERSION=$((30000 + COMMITS))" >> kernel/Kbuild
         
         rm -rf .git
 
@@ -95,9 +95,9 @@ jobs:
         BUILD_DATE=$(LC_ALL=C date -u +"%a %b %d %H:%M:%S UTC %Y")
         [ -f common/scripts/mkcompile_h ] && sed -i "s/.*SOURCE_DATE_EPOCH.*/BUILD_DATE=\"$BUILD_DATE\"/g" common/scripts/mkcompile_h
         [ -f common/init/Makefile ] && sed -i "s/^build-timestamp =.*/build-timestamp = $BUILD_DATE/g" common/init/Makefile
-        cd common
-        git add -A
-        git commit -m "Apply custom branding and bypass SOURCE_DATE_EPOCH" || true
+        #cd common
+        #git add -A
+        #git commit -m "Apply custom branding and bypass SOURCE_DATE_EPOCH" || true
         
     - name: Setup Kernel Signing Keys
       run: |
