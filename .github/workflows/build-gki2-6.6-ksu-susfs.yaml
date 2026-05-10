@@ -33,7 +33,7 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
         mkdir android-kernel && cd android-kernel
-        repo init -u https://android.googlesource.com/kernel/manifest -b common-android15-6.6-2026-01 --depth=1
+        repo init -u https://android.googlesource.com/kernel/manifest -b common-android15-6.6-lts --depth=1
         repo sync -j$(nproc)
         
     - name: Integrate KernelSU
@@ -44,8 +44,8 @@ jobs:
         COMMITS=$(git rev-list --count HEAD)
         
         # Tiesiogiai pakeičiame numatytuosius (0x033b ir c37...) tavo reikšmėmis Makefile ir Kbuild failuose
-        sed -i 's/0x033b/0x351/g' kernel/Makefile kernel/Kbuild 2>/dev/null || true
-        sed -i 's/c371061b19d8c7d7d6133c6a9bafe198fa944e50c1b31c9d8daa8d7f1fc2d2d6/a133eaec1c9d2838dfd9ce4411ea0bcc494e1a2fec4eab3f4f675ec076897f0c/g' kernel/Makefile kernel/Kbuild 2>/dev/null || true
+        # sed -i 's/0x033b/0x351/g' kernel/Makefile kernel/Kbuild 2>/dev/null || true
+        # sed -i 's/c371061b19d8c7d7d6133c6a9bafe198fa944e50c1b31c9d8daa8d7f1fc2d2d6/a133eaec1c9d2838dfd9ce4411ea0bcc494e1a2fec4eab3f4f675ec076897f0c/g' kernel/Makefile kernel/Kbuild 2>/dev/null || true
         
         # Nustatome KSU versiją
         sed -i '/-DKSU_VERSION/d' kernel/Kbuild
