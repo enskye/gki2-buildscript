@@ -44,8 +44,8 @@ jobs:
         COMMITS=$(git rev-list --count HEAD)
         
         # Tiesiogiai pakeičiame numatytuosius (0x033b ir c37...) tavo reikšmėmis Makefile ir Kbuild failuose
-        # sed -i 's/0x033b/0x351/g' kernel/Makefile kernel/Kbuild 2>/dev/null || true
-        # sed -i 's/c371061b19d8c7d7d6133c6a9bafe198fa944e50c1b31c9d8daa8d7f1fc2d2d6/a133eaec1c9d2838dfd9ce4411ea0bcc494e1a2fec4eab3f4f675ec076897f0c/g' kernel/Makefile kernel/Kbuild 2>/dev/null || true
+        sed -i 's/0x033b/0x351/g' kernel/Makefile kernel/Kbuild 2>/dev/null || true
+        sed -i 's/c371061b19d8c7d7d6133c6a9bafe198fa944e50c1b31c9d8daa8d7f1fc2d2d6/a133eaec1c9d2838dfd9ce4411ea0bcc494e1a2fec4eab3f4f675ec076897f0c/g' kernel/Makefile kernel/Kbuild 2>/dev/null || true
         
         # Nustatome KSU versiją
         sed -i '/-DKSU_VERSION/d' kernel/Kbuild
@@ -140,7 +140,7 @@ jobs:
         else
           cp out/dist/Image.lz4 AK3/
         fi
-        echo "ZIP_NAME=Kyernel-Pixel-10-Pro-XL-$(date +%Y%m%d)" >> $GITHUB_ENV
+        echo "ZIP_NAME=kyernel-gki2-6.6-$(date +%Y%m%d)" >> $GITHUB_ENV
 
     - name: Upload Flashable ZIP
       uses: actions/upload-artifact@v4
