@@ -49,7 +49,7 @@ jobs:
         
         # Nustatome KSU versiją
         sed -i '/-DKSU_VERSION/d' kernel/Kbuild
-        echo "ccflags-y += -DKSU_VERSION=$((30000 + COMMITS))" >> kernel/Kbuild
+        echo "ccflags-y += -DKSU_VERSION=$((30001 + COMMITS))" >> kernel/Kbuild
         
         rm -rf .git
 
