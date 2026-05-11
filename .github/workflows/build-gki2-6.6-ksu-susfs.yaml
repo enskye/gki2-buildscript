@@ -33,7 +33,7 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
         mkdir android-kernel && cd android-kernel
-        repo init -u https://android.googlesource.com/kernel/manifest -b common-android15-6.6-2026-01 --depth=1
+        repo init -u https://android.googlesource.com/kernel/manifest -b common-android15-6.6-lts --depth=1
         repo sync -j$(nproc)
         
     - name: Integrate KernelSU
@@ -95,9 +95,7 @@ jobs:
         BUILD_DATE=$(LC_ALL=C date -u +"%a %b %d %H:%M:%S UTC %Y")
         [ -f common/scripts/mkcompile_h ] && sed -i "s/.*SOURCE_DATE_EPOCH.*/BUILD_DATE=\"$BUILD_DATE\"/g" common/scripts/mkcompile_h
         [ -f common/init/Makefile ] && sed -i "s/^build-timestamp =.*/build-timestamp = $BUILD_DATE/g" common/init/Makefile
-        #cd common
-        #git add -A
-        #git commit -m "Apply custom branding and bypass SOURCE_DATE_EPOCH" || true
+
         
     - name: Setup Kernel Signing Keys
       run: |
