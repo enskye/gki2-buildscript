@@ -61,10 +61,10 @@ jobs:
         cp -a susfs4ksu/kernel_patches/include/linux/* android-kernel/common/include/linux/
         cd android-kernel/common
         KERNEL_PATCH=$(ls ../../susfs4ksu/kernel_patches/50_add_susfs_in_gki-*.patch | head -n 1)
-        patch -p1 < "$KERNEL_PATCH"
+        patch -p1 -F3 < "$KERNEL_PATCH"
         cd KernelSU
         KSU_PATCH=$(ls ../../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs*.patch | head -n 1)
-        patch -p1 < "$KSU_PATCH"
+        patch -p1 -F3 < "$KSU_PATCH"
         
     - name: Configure GKI dependencies, Mountify & SUSFS Configs
       run: |
