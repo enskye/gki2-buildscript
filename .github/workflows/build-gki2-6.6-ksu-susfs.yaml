@@ -111,6 +111,13 @@ jobs:
           openssl req -new -x509 -key signing/kernel_key.pem -out signing/kernel_cert.pem -days 365 -subj "/C=LT/ST=Dev/L=Build/O=Kyernel/CN=kyernel-custom"
         fi
         
+    - name: Fix SUSFS syntax error in SELinux hooks
+      run: |
+        cd android-kernel/common
+        echo "Fixing 'extern static int' syntax error..."
+        sed -i 's/extern static int/extern int/g' security/selinux/hooks.c
+        sed -i 's/extern static int/extern int/g' security/selinux/selinuxfs.c
+        
     - name: Build Kernel
       run: |
         cd android-kernel
