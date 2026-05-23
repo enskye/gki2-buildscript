@@ -66,9 +66,9 @@ jobs:
         
     - name: Fix KernelSU Clang Compiler Warnings
       run: |
-        sed -i 's/if (security_dump_masked_av_fn)/if (\&security_dump_masked_av_fn)/g' common/drivers/kernelsu/feature/selinux_hide.c
-        sed -i 's/if (context_struct_compute_av_fn) {/if (\&context_struct_compute_av_fn) {/g' common/drivers/kernelsu/feature/selinux_hide.c
-    
+        sed -i 's/if (security_dump_masked_av_fn)/if (\&security_dump_masked_av_fn)/g' android-kernel/common/drivers/kernelsu/feature/selinux_hide.c
+        sed -i 's/if (context_struct_compute_av_fn) {/if (\&context_struct_compute_av_fn) {/g' android-kernel/common/drivers/kernelsu/feature/selinux_hide.c
+
     - name: Configure GKI dependencies, Mountify & SUSFS Configs
       run: |
         cd android-kernel
