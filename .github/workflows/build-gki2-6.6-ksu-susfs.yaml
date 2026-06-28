@@ -64,11 +64,12 @@ jobs:
         KSU_PATCH=$(ls ../../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs*.patch | head -n 1)
         patch -p1 -F3 < "$KSU_PATCH"
 
-    - name: Apply KSU Manual Hooks
+    - name: Apply KSU Manual Hooks Patch via Git Clone
       run: |
-        curl -LSs "https://raw.githubusercontent.com/enskye/kernel_patches/main/hooks/ksu-manual-hooks.patch" \
-        | patch -p1 -F3 -d android-kernel/common
-        
+        git clone https://github.com/enskye/kernel_patches.git patches-repo
+        cd android-kernel/common
+        patch -p1 -F3 < ../../patches-repo/hooks/ksu-manual-hooks.patch
+
     - name: Fix KernelSU Clang Compiler Warnings
       run: |
         sed -i 's/if (security_dump_masked_av_fn)/if (\&security_dump_masked_av_fn)/g' android-kernel/common/drivers/kernelsu/feature/selinux_hide.c
