@@ -63,6 +63,11 @@ jobs:
         cd KernelSU
         KSU_PATCH=$(ls ../../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs*.patch | head -n 1)
         patch -p1 -F3 < "$KSU_PATCH"
+
+    - name: Apply KSU Manual Hooks
+      run: |
+        curl -LSs "https://raw.githubusercontent.com/enskye/kernel_patches/main/hooks/ksu-manual-hooks.patch" \
+        | patch -p1 -F3 -d android-kernel/common
         
     - name: Fix KernelSU Clang Compiler Warnings
       run: |
