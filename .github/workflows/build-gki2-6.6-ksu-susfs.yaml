@@ -140,7 +140,7 @@ jobs:
         else
           cp out/dist/Image.lz4 AK3/
         fi
-        echo "ZIP_NAME=kyernel-gki2-6.6-$(date +%Y%m%d)" >> $GITHUB_ENV
+        echo "ZIP_NAME=kyernel-$(date +%Y%m%d)" >> $GITHUB_ENV
 
     - name: Upload Flashable ZIP
       uses: actions/upload-artifact@v4
