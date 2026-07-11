@@ -39,7 +39,7 @@ jobs:
     - name: Integrate KernelSU
       run: |
         cd android-kernel/common
-        curl -LSs "https://raw.githubusercontent.com/enskye/KernelSU/main/kernel/setup.sh" | bash -s main
+        curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/main/kernel/setup.sh" | bash -s master
         cd KernelSU
         COMMITS=$(git rev-list --count HEAD)
         
@@ -56,6 +56,16 @@ jobs:
         git clone https://github.com/enskye/kernel_patches.git patches-repo
         cd android-kernel/common
         patch -p1 -F3 < ../../patches-repo/hooks/ksu-manual-hooks.patch
+        
+    - name: Verify manual-hook symbols exist in driver source
+      run: |
+        cd android-kernel/common/KernelSU/kernel   # adjust to wherever setup.sh drops it
+        for sym in ksu_execveat_hook ksu_handle_execve_sucompat ksu_handle_execve_ksud \
+                   ksu_handle_compat_execve_ksud ksu_handle_faccessat ksu_vfs_read_hook \
+                   ksu_handle_sys_read ksu_handle_stat ksu_input_hook \
+                   ksu_handle_input_handle_event ksu_handle_devpts; do
+          grep -rl "$sym" . >/dev/null || { echo "MISSING: $sym"; exit 1; }
+        done
 
     - name: Fix KernelSU Clang Compiler Warnings
       run: |
