@@ -41,17 +41,22 @@ jobs:
         cd android-kernel/common
         curl -LSs "https://raw.githubusercontent.com/backslashxx/KernelSU/master/kernel/setup.sh" | bash -s master
         cd KernelSU
-        COMMITS=$(git rev-list --count HEAD)
-        sed -i '/-DKSU_VERSION/d' kernel/Makefile
-        echo "ccflags-y += -DKSU_VERSION=$((30000 + COMMITS))" >> kernel/Makefile
+        #COMMITS=$(git rev-list --count HEAD)
+        #sed -i '/-DKSU_VERSION/d' kernel/Makefile
+        #echo "ccflags-y += -DKSU_VERSION=$((30000 + COMMITS))" >> kernel/Makefile
         
-        rm -rf .git
+        #rm -rf .git
 
     - name: Apply KSU Manual Hooks Patch via Git Clone
       run: |
         git clone https://github.com/enskye/kernel_patches.git patches-repo
         cd android-kernel/common
         patch -p1 -F3 < ../../patches-repo/hooks/ksu-manual-hooks.patch
+        
+    - name: KSU Toolkit patches
+      run: |
+        cd android-kernel/common/KernelSU
+        curl -LSs "https://raw.githubusercontent.com/enskye/kernel_patches/main/ksu-extensions.patch" | patch -p1
         
     - name: Verify manual-hook symbols exist in driver source
       run: |
