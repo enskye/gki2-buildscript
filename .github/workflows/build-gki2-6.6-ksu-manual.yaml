@@ -51,19 +51,6 @@ jobs:
         
         rm -rf .git
 
-      
-    - name: Integrate susfs4ksu
-      run: |
-        git clone https://gitlab.com/simonpunk/susfs4ksu.git -b gki-android15-6.6-dev
-        cp -a susfs4ksu/kernel_patches/fs/* android-kernel/common/fs/
-        cp -a susfs4ksu/kernel_patches/include/linux/* android-kernel/common/include/linux/
-        cd android-kernel/common
-        KERNEL_PATCH=$(ls ../../susfs4ksu/kernel_patches/50_add_susfs_in_gki-*.patch | head -n 1)
-        patch -p1 -F3 < "$KERNEL_PATCH"
-        cd KernelSU
-        KSU_PATCH=$(ls ../../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs*.patch | head -n 1)
-        patch -p1 -F3 < "$KSU_PATCH"
-
     - name: Apply KSU Manual Hooks Patch via Git Clone
       run: |
         git clone https://github.com/enskye/kernel_patches.git patches-repo
@@ -83,17 +70,6 @@ jobs:
         sed -i 's/check_defconfig//' ./common/build.config.gki
         echo "CONFIG_OVERLAY_FS=y" >> common/arch/arm64/configs/gki_defconfig
         echo "CONFIG_TMPFS_XATTR=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_SUSFS=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_SUS_MOUNT=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_SUS_KSTAT=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_SPOOF_UNAME=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_ENABLE_LOG=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> common/arch/arm64/configs/gki_defconfig
         
         echo "CONFIG_KSU_MANUAL_HOOK=y" >> common/arch/arm64/configs/gki_defconfig
         echo "CONFIG_KSU_KPROBES=n" >> common/arch/arm64/configs/gki_defconfig
