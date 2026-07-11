@@ -64,12 +64,6 @@ jobs:
         KSU_PATCH=$(ls ../../../susfs4ksu/kernel_patches/KernelSU/10_enable_susfs*.patch | head -n 1)
         patch -p1 -F3 < "$KSU_PATCH"
 
-    - name: Apply KSU Manual Hooks Patch via Git Clone
-      run: |
-        git clone https://github.com/enskye/kernel_patches.git patches-repo
-        cd android-kernel/common
-        patch -p1 -F3 < ../../patches-repo/hooks/ksu-manual-hooks.patch
-
     - name: Fix KernelSU Clang Compiler Warnings
       run: |
         sed -i 's/if (security_dump_masked_av_fn)/if (\&security_dump_masked_av_fn)/g' android-kernel/common/drivers/kernelsu/feature/selinux_hide.c
@@ -81,8 +75,7 @@ jobs:
         sed -i '/^[[:space:]]*"protected_exports_list"[[:space:]]*:[[:space:]]*"android\/abi_gki_protected_exports_aarch64",$/d' common/BUILD.bazel
         rm -f common/android/abi_gki_protected_exports_*
         sed -i 's/check_defconfig//' ./common/build.config.gki
-        echo "CONFIG_OVERLAY_FS=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_TMPFS_XATTR=y" >> common/arch/arm64/configs/gki_defconfig
+        echo "CONFIG_KSU=y" >> common/arch/arm64/configs/gki_defconfig
         echo "CONFIG_SUSFS=y" >> common/arch/arm64/configs/gki_defconfig
         echo "CONFIG_KSU_SUSFS=y" >> common/arch/arm64/configs/gki_defconfig
         echo "CONFIG_KSU_SUSFS_SUS_PATH=y" >> common/arch/arm64/configs/gki_defconfig
@@ -94,10 +87,6 @@ jobs:
         echo "CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y" >> common/arch/arm64/configs/gki_defconfig
         echo "CONFIG_KSU_SUSFS_OPEN_REDIRECT=y" >> common/arch/arm64/configs/gki_defconfig
         echo "CONFIG_KSU_SUSFS_SUS_MAP=y" >> common/arch/arm64/configs/gki_defconfig
-        
-        echo "CONFIG_KSU_MANUAL_HOOK=y" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU_KPROBES=n" >> common/arch/arm64/configs/gki_defconfig
-        echo "CONFIG_KSU=y" >> common/arch/arm64/configs/gki_defconfig
         
     - name: Apply Custom Branding and Real Build Date
       run: |
